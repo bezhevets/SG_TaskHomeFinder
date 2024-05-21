@@ -17,14 +17,16 @@ class PropertyCardScraper:
 
         characteristics = {}
         for i in range(0, len(rows_text), 2):
-            characteristics[rows_text[i].replace(":", "")] = rows_text[i+1]
+            characteristics[rows_text[i].replace(":", "")] = rows_text[i + 1]
         return characteristics
 
     @staticmethod
     def get_property_title(soup: BeautifulSoup) -> str | None:
         try:
-            title = soup.find("h1", {"class": "with-view-position"}).get_text(strip=True)
-            result = re.sub(r"\d+views", '', title)
+            title = soup.find("h1", {"class": "with-view-position"}).get_text(
+                strip=True
+            )
+            result = re.sub(r"\d+views", "", title)
             return result
         except AttributeError:
             return None
@@ -33,7 +35,9 @@ class PropertyCardScraper:
     def get_property_description(soup: BeautifulSoup) -> str | None:
         description_parts = []
         try:
-            description_block = soup.find("div", {"class": "procontent"}).find_all(recursive=False)
+            description_block = soup.find("div", {"class": "procontent"}).find_all(
+                recursive=False
+            )
         except AttributeError:
             return None
 
@@ -42,7 +46,9 @@ class PropertyCardScraper:
                 continue
             description_parts.append(tag)
 
-        description = "\n".join([part.get_text(strip=True) for part in description_parts])
+        description = "\n".join(
+            [part.get_text(strip=True) for part in description_parts]
+        )
         return description
 
     @staticmethod
@@ -74,11 +80,10 @@ class PropertyCardScraper:
 
     def get_property_type(self, soup: BeautifulSoup) -> str | None:
         block_property_type = soup.find(
-            "ul",{"class": "listprope listpor singlepro"},
+            "ul",
+            {"class": "listprope listpor singlepro"},
         )
-        property_type = block_property_type.find(
-            "li", {"class": "v_home"}
-        )
+        property_type = block_property_type.find("li", {"class": "v_home"})
         try:
             if property_type:
                 property_type = property_type.get_text(strip=True)
