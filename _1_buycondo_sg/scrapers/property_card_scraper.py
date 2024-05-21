@@ -114,7 +114,7 @@ class PropertyCardScraper:
         price = soup.find("div", {"class": "porprice for-rent"})
         if price:
             return "For Rent"
-        return None
+        return "For Buy"
 
     def get_property_data(self, soup: BeautifulSoup) -> dict:
         property_block_info = soup.find("ul", {"class": "listprope listpor singlepro"})
